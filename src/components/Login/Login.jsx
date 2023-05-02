@@ -1,6 +1,11 @@
 import React, { useState } from "react";
 import app from "../../firebase.init";
-import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
+import {
+  GoogleAuthProvider,
+  getAuth,
+  signInWithPopup,
+  signOut,
+} from "firebase/auth";
 
 const Login = () => {
   const [user, setUser] = useState(null);
@@ -19,9 +24,25 @@ const Login = () => {
       });
   };
 
+  const handleSignOut = () => {
+    signOut(auth)
+      .then((result) => {
+        setUser(null);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   return (
     <div>
-      <button onClick={handleGoogleSignIn}>log in</button>
+      {/* conditional rendering of buttons */}
+      {user ? (
+        <button onClick={handleSignOut}>Sign out</button>
+      ) : (
+        <button onClick={handleGoogleSignIn}>log in</button>
+      )}
+
       {/* conditional rendering */}
       {user && (
         <div>
